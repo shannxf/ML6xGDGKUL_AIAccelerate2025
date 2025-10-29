@@ -128,9 +128,11 @@ The **weight** represents the total points available for that criterion. Points 
 
 **Code Submission:**
 
-- Push your code to this GitHub repository
+- Copy our repository and recreate it on your own repository by using a git fork (clone)
+- You can push your code to this newly created GitHub repository copy as desired (to your own repository). Pushing allows you to share your code with your teammates and allows us to see your progress to better help you along the way.
+- Give all of the ML6 evaluators access to this repository by (settings > collaborators): usernames are "clemvg", "MatthiasCami8", "TheoDepr", "cas-ML6".
 - Keep code readable and well-documented
-- **Deadline**: Last commit before the specified deadline will be evaluated
+- **Deadline**: Last commit before the specified deadline will be evaluated!
 
 **Presentation Submission:**
 
