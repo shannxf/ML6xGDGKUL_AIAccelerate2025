@@ -25,9 +25,9 @@ def run_code(code: str) -> str:
 # ----------------------------------------------------------------------
 # 1. Planner 
 # ----------------------------------------------------------------------
-planner = BuiltInPlanner(
-        thinking_config=ThinkingConfig(include_thoughts=False)
-    )
+def make_planner(include_thoughts=False):
+    return BuiltInPlanner(thinking_config=ThinkingConfig(include_thoughts=include_thoughts))
+
 # -----------------------------
 # Reasoner agent
 # -----------------------------
@@ -43,7 +43,7 @@ reasoner = llm_agent.Agent(
             "- ALWAYS output only the final, exact answer (no markdown, no punctuation)."
         ),
         tools=[run_code],
-        planner=planner,
+        planner=make_planner(),
     )
 # -----------------------------
 # Planner agent
@@ -57,7 +57,7 @@ step_deductor = llm_agent.Agent(
             "No reasoning, no explanations, no filler words — just numbered steps in order to solve the question."
         ),
         tools=[],
-        planner=planner,
+        planner=make_planner(),
     )
 
 
@@ -106,7 +106,7 @@ root_agent = llm_agent.Agent(
         "- Final output: ONLY the exact answer, with no extra words, markdown, or commentary."),
     tools=[web_search],
     sub_agents=[reasoner, step_deductor],
-    planner=planner,
+    planner=make_planner(),
 )
 
 """ issues with current prompts:
