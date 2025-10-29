@@ -29,7 +29,7 @@ pro_agent = llm_agent.Agent(
         "Self-check before answering: correctness, units, edge cases, and whether the question asks for only a final value. "
         "Always end with a single line: 'Final answer: <short answer>'."
     ),
-    tools=[web_search,read_png_as_string, web_research, image_ops, calculator, get_timef],
+    tools=[web_search,read_png_as_string, web_research, image_ops, calculator, get_time],
     sub_agents=[],
 )
 
