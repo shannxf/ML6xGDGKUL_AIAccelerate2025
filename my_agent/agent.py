@@ -31,8 +31,7 @@ planner = BuiltInPlanner(
 # -----------------------------
 # Reasoner agent
 # -----------------------------
-def make_reasoner():
-    return llm_agent.Agent(
+reasoner = llm_agent.Agent(
         model="gemini-2.5-flash-lite",
         name="reasoner",
         description="An agent that plans, reasons, and uses tools to find answers.",
@@ -46,13 +45,10 @@ def make_reasoner():
         tools=[run_code],
         planner=planner,
     )
-
-
 # -----------------------------
 # Planner agent
 # -----------------------------
-def make_step_deductor():
-    return llm_agent.Agent(
+step_deductor = llm_agent.Agent(
         model="gemini-2.5-flash-lite",
         name="step_deductor",
         description="Breaks down a question into clear numbered steps.",
@@ -63,16 +59,6 @@ def make_step_deductor():
         tools=[],
         planner=planner,
     )
-
-
-# -----------------------------
-# Root agents
-# -----------------------------
-# Create *independent* sub-agent instances for each root agent
-step_deductor_agent_r3 = make_step_deductor()
-reasoner_agent_r2 = make_reasoner()
-step_deductor_agent_r = make_step_deductor()
-reasoner_agent_r = make_reasoner()
 
 
 # # Root agent 3 (uses step_deductor)
@@ -87,7 +73,7 @@ reasoner_agent_r = make_reasoner()
 #         "- When using web_search, include [1], [2] markers and a short 'Sources:' list.\n"
 #     ),
 #     tools=[web_search],
-#     sub_agents=[step_deductor_agent_r3],
+#     sub_agents=[step_deductor],
 # )
 
 # # Root agent 2 (uses reasoner)
@@ -103,7 +89,7 @@ reasoner_agent_r = make_reasoner()
 #         "- When using web_search, include [1], [2] markers and a short 'Sources:' list.\n"
 #     ),
 #     tools=[web_search, run_code],
-#     sub_agents=[reasoner_agent_r2],
+#     sub_agents=[reasoner],
 # )
 
 # Root agent (combined orchestrator)
@@ -119,7 +105,7 @@ root_agent = llm_agent.Agent(
         "- When using web_search, cite sources briefly with [1], [2] and a 'Sources:' line.\n"
         "- Final output: ONLY the exact answer, with no extra words, markdown, or commentary."),
     tools=[web_search],
-    sub_agents=[step_deductor_agent_r, reasoner_agent_r],
+    sub_agents=[reasoner, step_deductor],
     planner=planner,
 )
 
@@ -134,3 +120,4 @@ root_agent = llm_agent.Agent(
 
 for the def run code... gemini tried to do run code but i didnt have that tool, idk if this is actually good to do..
 """
+
