@@ -69,17 +69,18 @@ def web_search(query: str) -> Dict[str, List[dict]]:
 
     # Normalize response into our expected schema
     raw_results = resp.get("results") or []
-    normalized_results = [
-        {
+    # Include stable incremental ids on results to make citation linking simpler
+    normalized_results = []
+    for idx, item in enumerate(raw_results):
+        normalized_results.append({
+            "id": idx + 1,
             "title": item.get("title") or "",
             "snippet": item.get("content") or "",
             "url": item.get("url") or "",
-        }
-        for item in raw_results
-    ]
+        })
 
     citations = [
-        {"id": idx + 1, "title": r.get("title", ""), "url": r.get("url", "")}
+        {"id": r.get("id", idx + 1), "title": r.get("title", ""), "url": r.get("url", "")}
         for idx, r in enumerate(normalized_results)
     ]
 
