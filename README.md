@@ -2,6 +2,8 @@
   <img src="assets/logo.svg" alt="Project Logo" height="144">
 </p>
 
+Everything is in the README below but optionally you can checkout the [slidedeck](https://docs.google.com/presentation/d/1dijpbFdx7RlDpcYknkmFT7DJVL6Ho91_6xVsMF-KUYs/edit?usp=sharing).
+
 # Google Cloud Platform (GCP) recources by GDG
 
 You’ll get free Google Cloud access during the event—no credit card needed.
