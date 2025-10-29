@@ -5,7 +5,6 @@ import logging
 import pandas as pd
 import pymupdf4llm
 import os
-import re
 import torch
 import json
 
@@ -20,11 +19,9 @@ client = None
 if api_key:
     client = genai.Client(api_key=api_key)
 
-def extract_info(file_path):
+def information_extractor(query: str, file_path: str) -> dict:
     # First retrieve file as a markdown, depending on the file_type
-    file = None
     extension = os.path.splitext(file_path)[-1]
-    # TODO: Don't forget to update the requirements
     # TODO: Maybe add docx?
     if extension == ".pdf":
         file = extract_from_pdf(file_path)
@@ -34,10 +31,18 @@ def extract_info(file_path):
         file = extract_from_html(file_path)
     elif extension == ".json":
         file = extract_from_json(file_path)
+    else:
+        return {"error": f"Unsupported file extension {extension}"}
+
+    if not file:
+        return{"error": f"File {file_path} does not exist"}
 
     # Create batches
     batches = split_to_batches(file)
-    # TODO: Rank batches
+    # Rank batches and keep only the most relevant ones
+    output = rank_batches(query, batches, file_path)
+
+    return output
 
 
 ###############################
@@ -118,32 +123,61 @@ def split_to_batches(text, batch_size=200, cohesion_overlap=40):
 ### Rank embeddings ###
 #######################
 
-def rank_batches (query_text, batches, top_k=20, top_n=4):
+def rank_batches (question, batches, file_path, top_k=20, top_n=4):
+    """ Rank batches according to relevance. First calculate cosine similarity of query, and text embeddings.
+    Then leverage the LLM client to reason for the most relevant batches.
+    Args:   - question: the user's input question
+            - batches: the provided file, split into batches
+            - file_path: the file path
+            - top_k: the number of batches the LLM client will consider
+            - top_n: the number of most relevant batches that will be returned
+    """
     model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
-    query_embeddings = model.encode(query_text, convert_to_tensor=True)
+    query_embeddings = model.encode(question, convert_to_tensor=True)
     batch_embeddings = model.encode(batches, convert_to_tensor=True)
 
+    # Calculate the cosine similarity of the query and key value
     cos_sim_scores = util.pytorch_cos_sim(query_embeddings, batch_embeddings)[0]
     top_n_indices = torch.topk(cos_sim_scores, k=min(top_k, len(batches))).indices.tolist()
     top_batches = [batches[i] for i in top_n_indices]
+    prompt_for_top_batches = "\n".join([f"[{i}] {batch}" for i, batch in enumerate(top_batches)])
+
+    # Example of the output the LLM should create
+    schema_example = json.dumps({
+        "query": question,
+        "top_batches": ["<most relevant batch 1>", "<most relevant batch 2>"],
+        "file_path": file_path
+    }, indent=2)
 
     # Rank with LLM
-    llm_scores = []
     prompt = f""" I want you successfully extract the most relevant information from the text.
-              This is the question: {query_text}
-              You are provided a list of batches of a document:
-              {chr(10).join([f'[{i}] {chunk}' for i, chunk in enumerate(top_batches)])}
-              You goal is to rank them from most to least relevant compared to the query text.
-              Return only the {top_n} batches in order."""
+              Given:
+              - this user question: {question} 
+              - and some pre-defined relevant text sections: {prompt_for_top_batches}
+                
+              
+              Your goal is:
+              - Read all the batches carefully.
+              - Find the most relevant batches 
+              - Sort them depending on the relevance level
+              - Only keep the {top_n} most relevant batches
+              - Return your answer as a JSON object with this structure: {schema_example}
+                """
 
     response = client.models.generate_content(
         model='gemini-2.5-flash-lite',
         contents=[prompt]
     )
 
-    # Extract numeric indices from LLM response
-    new_ranked_indices = [int(x) for x in re.findall(r'\d+', response.text) if int(x) < len(top_batches)]
-    new_top_batches = [top_batches[i] for i in new_ranked_indices[:top_n]]
+    summary_text = response.text.strip() if response and response.text else ""
+    try:
+        output_dict = json.loads(summary_text)
+    except json.decoder.JSONDecodeError:
+        output_dict = {
+            "query": question,
+            "top_batches": top_batches[:top_n],
+            "file_path": file_path
+        }
 
-    return new_top_batches
+    return output_dict
