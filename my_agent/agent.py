@@ -4,7 +4,7 @@ The `root_agent` is used to evaluate your agent's performance.
 """
 
 from google.adk.agents import llm_agent
-from my_agent.tools import web_search,read_png_as_string, web_research, image_ops, calculator, get_time, grid_extractor, string_reasoner, code_reasoner
+from my_agent.tools import web_search,read_png_as_string, web_research, image_ops, calculator, get_time code_reasoner
 
 fast_agent = llm_agent.Agent(
     model='gemini-2.5-flash-lite',
@@ -15,7 +15,7 @@ fast_agent = llm_agent.Agent(
         "If you used web_search or web_research tools, add inline citations like [1] and a short 'Sources' list. "
         "Always end with a single line: 'Final answer: <short answer>'."
     ),
-    tools=[web_search,read_png_as_string, web_research, image_ops, calculator, get_time,grid_extractor,string_reasoner,code_reasoner],
+    tools=[web_search,read_png_as_string, web_research, image_ops, calculator, get_time,,code_reasoner],
     sub_agents=[],
 )
 
@@ -29,7 +29,7 @@ pro_agent = llm_agent.Agent(
         "Self-check before answering: correctness, units, edge cases, and whether the question asks for only a final value. "
         "Always end with a single line: 'Final answer: <short answer>'."
     ),
-    tools=[web_search,read_png_as_string, web_research, image_ops, calculator, get_time,grid_extractor,string_reasoner,code_reasoner],
+    tools=[web_search,read_png_as_string, web_research, image_ops, calculator, get_timef,code_reasoner],
     sub_agents=[],
 )
 
@@ -50,6 +50,6 @@ root_agent = llm_agent.Agent(
         "Routing: default to pro_agent for complex tasks; use fast_agent for simple factual questions.\n\n"
         "Output rule: Always end with a single line 'Final answer: <short answer>'."
     ),
-    tools=[web_search,read_png_as_string, web_research, image_ops, calculator, get_time,grid_extractor,string_reasoner,code_reasoner],
+    tools=[web_search,read_png_as_string, web_research, image_ops, calculator, get_time,code_reasoner],
     sub_agents=[fast_agent, pro_agent],
 )
