@@ -1,34 +1,6 @@
-NOTE: Full benchmark will be uploaded soon.
-
 <p align="center">
   <img src="assets/logo.svg" alt="Project Logo" height="144">
 </p>
-
-
-# Google Cloud Platform (GCP) recources by GDG
-
-You’ll get free Google Cloud access during the event—no credit card needed.
-
-## How to redeem:
-
-- Make sure you’re signed into a Gmail/Google account.
-
-- Open our event’s unique link: https://trygcp.dev/claim/gdg-other-ai-accelerate-hack
-
-- Follow the prompts to activate your account and access the Google Cloud Console.
-
-## What is GCP?
-Google Cloud Platform offers all the tools of the google cloud development environment to build your applications. It also offers free Gemini API Keys so you can leverage the full potential of generative AI during today's hacking!
-
-These are some of the services the GCP offers ranging from backend & storage to scheduling and ML workloads. Some of them might be interesting to leverage during this case, especially the services enablign AI services! 
-
-* **Vertex AI** : Train/host custom models, embeddings, batch prediction, Model Garden.
-* **Vision API** : Labels, OCR, object detection.
-* **Speech-to-Text / Text-to-Speech** : Voice features.
-* **Translation API** : Multilingual apps fast.
-* **Vertex AI Workbench** : Managed notebooks; GPUs/TPUs if available.
-
-GCP offers a broad range of other services to allow for cloud deployment of applications. Feel free to check out the possibilities of GCP for your hacking today or future projects!
 
 # GDG Hackathon - ML6 Agent Challenge
 
@@ -53,6 +25,7 @@ Welcome! This repository contains everything you need to build and evaluate an A
 **An AI agent that can interpret questions (and possibly files) and return accurate answers.**
 
 The questions require your agent to:
+
 - Autonomously extract information from files
 - Search the web for relevant information
 - Reason about information step-by-step
@@ -64,10 +37,10 @@ An [agent](https://cdn.openai.com/business-guides-and-resources/a-practical-guid
 
 This challenge will help you get hands-on experience with building agents and custom tools. Throughout the day, questions of increasing difficulty will be released sequentially - covering different topics, modalities, and durations to test your agent's **accuracy** and **speed**.
 
-
 ### Deliverables
 
 **1. Technical Deliverable**
+
 - Working AI agent code in this repository
 - Code must be readable and well-structured
 - The agent code MUST be the same as the one used in your demo
@@ -77,11 +50,13 @@ This challenge will help you get hands-on experience with building agents and cu
 Your presentation should have two sections:
 
 **Section One: Demo & Insights**
+
 - Show your agent in action
 - Share key learnings and insights from development
 - Discuss interesting technical challenges you solved
 
 **Section Two: Real-World Application**
+
 - Demonstrate a potential business application
 - Showcase ROI and measurable business value
 - Present how the agent delivers impact in a realistic context
@@ -92,10 +67,13 @@ Your presentation should have two sections:
 
 | **Criteria** | **Weight** | **Guiding Questions** |
 |-------------|-----------|----------------------|
-| Agent Answer Accuracy | 60% | Was the answer given by your agent the same as the ground truth answer in our **hidden test set**? |
-| Agent Answer Speed | 10% | What was the average time required to generate an answer for all questions? |
-| Presentation Section One | 10% | Did we clearly see the agent in action? Did we receive interesting insights and learnings? |
-| Presentation Section Two | 20% | Did we clearly see the potential and value of the agent for an original use case? |
+| Agent Answer Accuracy | 40% | Was the answer given by your agent the same as the ground truth answer in our **hidden test set**? |
+| Agent Answer Speed | 10% | What was the average time required to generate correct answers for all questions? |
+| Presentation Section One | 20% | Did we clearly see the agent in action? Did we receive interesting insights and learnings? |
+| Presentation Section Two | 30% | Did we clearly see the potential and value of the agent for an original use case? |
+
+We will clone your repository and also evaluate the authenticity of your agent.
+To allow a smooth evaluation, make sure to properly update the python requirements if you are adding novel packages.
 
 ⚠️ **Important Note on Accuracy**: Your final accuracy score will be evaluated on a **hidden test set** that you don't have access to. This test set contains the same types of questions as your training set, but ensures fair evaluation. Use the training set (`benchmark/train.json`) to develop your agent, but avoid overfitting to it!
 
@@ -104,6 +82,7 @@ Your presentation should have two sections:
 We use a **100-point system** divided across these criteria and teams.
 
 The **weight** represents the total points available for that criterion. Points are distributed among teams based on performance:
+
 - **Highest-performing team**: 25% of the category's points
 - **Second team**: 15%
 - **Third team**: 10%
@@ -116,11 +95,13 @@ The **weight** represents the total points available for that criterion. Points 
 ### Submission Format
 
 **Code Submission:**
+
 - Push your code to this GitHub repository
 - Keep code readable and well-documented
 - **Deadline**: Last commit before the specified deadline will be evaluated
 
 **Presentation Submission:**
+
 - Share a link to your Google Slides presentation
 - Presentation must include: Intro, Section One (demo), and Section Two (business case)
 - **Grant access** to `cas.coopman@ml6.eu` for the slide deck AND any referenced files (videos, etc.)
@@ -130,10 +111,12 @@ The **weight** represents the total points available for that criterion. Points 
 **Your main workspace: `my_agent/` folder**
 
 This is where you'll spend most of your time:
+
 - `my_agent/agent.py` - Define your agent's configuration and capabilities
 - `my_agent/tools/` - Add custom tools/functions for your agent to use
 
 **Other folders (scaffolding - do not modify):**
+
 - `utils/` - Infrastructure code for running and evaluating agents
 - `benchmark/` - Train benchmark
 - `evaluate.py` - Evaluation script (feel free to read and understand it!)
@@ -143,22 +126,26 @@ This is where you'll spend most of your time:
 ### 1. Prerequisites
 
 You'll need:
+
 - Python 3.9 or higher
 - A Google API key (We will provide one)
 
 ### 2. Install uv (Python package manager)
 
 **macOS/Linux:**
+
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 **Windows:**
+
 ```powershell
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 Or via Homebrew (macOS):
+
 ```bash
 brew install uv
 ```
@@ -166,6 +153,7 @@ brew install uv
 ### 3. Setup the Project
 
 **Step 1: Copy the environment file**
+
 ```bash
 # From the project root, navigate to my_agent folder
 cd my_agent
@@ -181,11 +169,13 @@ copy .local_env .env
 **Step 2: Add your API key**
 
 Open `my_agent/.env` and replace the placeholder with your actual Google API key:
+
 ```
 GOOGLE_API_KEY="your_actual_api_key_here"
 ```
 
 **Step 3: Install dependencies**
+
 ```bash
 # Go back to project root
 cd ..
@@ -203,10 +193,11 @@ That's it! You're ready to start developing.
 Use the ADK web interface to test and debug your agent interactively:
 
 ```bash
-adk web
+uv run adk web
 ```
 
-Then open http://127.0.0.1:8000 in your browser. This gives you:
+Then open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser. This gives you:
+
 - Live chat interface to test your agent
 - Session history to review conversations
 - Real-time debugging
@@ -218,28 +209,39 @@ Then open http://127.0.0.1:8000 in your browser. This gives you:
 Test your agent against the train dataset:
 
 **Evaluate all questions:**
+
 ```bash
 uv run python evaluate.py
 ```
 
 **Evaluate a specific question:**
+
 ```bash
 uv run python evaluate.py --question 0
 ```
+
 (Replace `0` with any question index)
 
 **Save results to a custom file:**
+
 ```bash
 uv run python evaluate.py --output my_results.json
 ```
 
 Results include:
+
 - Total accuracy percentage
 - Detailed breakdown per question
 - Agent responses and expected answers
 - Evaluation method used (string match or LLM judge)
+- **Timing metrics** - Response time for each question and overall averages
 
-💡 **Tip**: This evaluation runs on the **training set** (`benchmark/validation.json`). Your final score will be based on a hidden test set with similar questions, so focus on building a robust, generalizable agent rather than memorizing answers!
+The evaluation tracks response times and provides:
+
+- **Average Response Time (All)**: Average time across all questions
+- **Average Response Time (Correct Only)**: Average time for correctly answered questions only
+
+💡 **Tip**: This evaluation runs on the **training set** (`benchmark/train.json`). Your final score will be based on a hidden test set with similar questions, so focus on building a robust, generalizable agent rather than memorizing answers!
 
 ## How to Build Your Agent
 
@@ -261,6 +263,7 @@ root_agent = llm_agent.Agent(
 ```
 
 **Key things to customize:**
+
 - `instruction`: This is your agent's system prompt - be specific about how it should behave
 - `tools`: Add custom tools to extend your agent's capabilities
 - `model`: Choose the best model for your use case
@@ -270,6 +273,7 @@ root_agent = llm_agent.Agent(
 Create new tools in `my_agent/tools/`:
 
 **Example: `my_agent/tools/calculator.py`**
+
 ```python
 def calculator(operation: str, a: float, b: float) -> float:
     """
@@ -291,6 +295,7 @@ def calculator(operation: str, a: float, b: float) -> float:
 ```
 
 Then import and add it to your agent in `agent.py`:
+
 ```python
 from google.adk.agents import llm_agent
 from my_agent.tools import web_search
@@ -305,7 +310,7 @@ root_agent = llm_agent.Agent(
 ### 3. Tips for Success
 
 - **Start simple**: Get a basic agent working first, then add complexity
-- **Test frequently**: Use `adk web` to interactively test changes
+- **Test frequently**: Use `uv run adk web` to interactively test changes
 - **Read the docs**: Everything you need to know about using the ADK can be found in the [official ADK documentation](https://google.github.io/adk-docs/)
 - **Check out examples**: Browse the [ADK samples repository](https://github.com/google/adk-samples) for inspiration and working examples
 - **Understand the dataset**: Look at questions in `benchmark/train.json` to understand what your agent needs to handle (some have attachments)
@@ -316,11 +321,12 @@ root_agent = llm_agent.Agent(
 If you want to see your evaluation runs in the web interface:
 
 1. **First, start the web UI:**
-   ```bash
-   adk web
-   ```
 
+   ```bash
+   uv run adk web
+   ```
 2. **Then run evaluations in a separate terminal:**
+
    ```bash
    uv run python evaluate.py
    ```
@@ -357,15 +363,18 @@ gdg-hackathon-prep/
 ## Troubleshooting
 
 **"Module not found" errors:**
+
 ```bash
 uv sync
 ```
 
 **API key issues:**
+
 - Make sure you copied `.local_env` to `.env` in the `my_agent/` folder
 - Verify the API key variable has been set
 
 **Port already in use:**
+
 ```bash
 # Kill the process using port 8000
 lsof -ti:8000 | xargs kill -9
@@ -375,14 +384,14 @@ lsof -ti:8000 | xargs kill -9
 
 ### Official Documentation & Examples
 
-- **ADK Documentation**: https://google.github.io/adk-docs/ - Complete guide on how to use the ADK
-- **ADK Samples**: https://github.com/google/adk-samples - Working examples for inspiration
-- **Gemini API Docs**: https://ai.google.dev/docs - Reference for Gemini models
+- **ADK Documentation**: [https://google.github.io/adk-docs/](https://google.github.io/adk-docs/) - Complete guide on how to use the ADK
+- **ADK Samples**: [https://github.com/google/adk-samples](https://github.com/google/adk-samples) - Working examples for inspiration
+- **Gemini API Docs**: [https://ai.google.dev/docs](https://ai.google.dev/docs) - Reference for Gemini models
 
 ### Agent Design & Best Practices
 
-- **Building Effective Agents**: https://www.anthropic.com/engineering/building-effective-agents - Anthropic's guide on agent design patterns and workflows
-- **Writing Tools for Agents**: https://www.anthropic.com/engineering/writing-tools-for-agents - Best practices for creating effective agent tools
+- **Building Effective Agents**: [https://www.anthropic.com/engineering/building-effective-agents](https://www.anthropic.com/engineering/building-effective-agents) - Anthropic's guide on agent design patterns and workflows
+- **Writing Tools for Agents**: [https://www.anthropic.com/engineering/writing-tools-for-agents](https://www.anthropic.com/engineering/writing-tools-for-agents) - Best practices for creating effective agent tools
 
 ### Getting Help
 
@@ -390,7 +399,6 @@ lsof -ti:8000 | xargs kill -9
 - **Other Issues**: Feel free to reach out to one of the ML6 ML Engineers walking around
 
 Good luck building your agent! 🚀
-
 
 ### About ML6
 
