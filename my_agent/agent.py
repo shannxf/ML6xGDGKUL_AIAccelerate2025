@@ -12,7 +12,7 @@ fast_agent = llm_agent.Agent(
     description="Fast path for straightforward questions and quick lookups.",
     instruction=(
         "Answer directly and concisely. Prefer built-in knowledge; use tools sparingly. "
-        "If you used any external tools, add inline citations like [1] and a short 'Sources' list. "
+        "If you used any web_search or web_research tools, add inline citations like [1] and a short 'Sources' list. "
         "Always end with a single line: 'Final answer: <short answer>'."
     ),
     tools=[web_search, web_research, image_ops, video_ops, calculator, get_time],
@@ -25,7 +25,7 @@ pro_agent = llm_agent.Agent(
     description="High-quality path for complex, multi-step, or high-stakes questions.",
     instruction=(
         "Think carefully and verify. Plan briefly, execute tools, then synthesize. "
-        "When tools were used, include inline citations [n] and a 'Sources' list. "
+        "When web_search or web_research tools are used, include inline citations [n] and a 'Sources' list. "
         "Self-check before answering: correctness, units, edge cases, and whether the question asks for only a final value. "
         "Always end with a single line: 'Final answer: <short answer>'."
     ),
@@ -38,11 +38,11 @@ root_agent = llm_agent.Agent(
     name='agent',
     description="A helpful assistant that can answer questions.",
     instruction=(
-        "You are a precise assistant. Keep answers short unless the user asks for detail.\n\n"
-    "When needed, follow this loop:\n"
-    "  - Plan: list 1-3 steps.\n"
-    "  - Act: call tools in sequence (web_search/web_research, image_ops, video_ops, calculator, get_time).\n"
-    "  - Synthesize: combine results, add [n] citations, and perform a quick self-check (units, edge cases).\n\n"
+        "You are a precise assistant. Keep answers short using proper citations and include a corresponding reference list.\n\n"
+        "When needed, follow this loop:\n"
+        "  - Plan: list 1-3 steps.\n"
+        "  - Act: According to the plan, call tools in sequence (web_search/web_research, image_ops, video_ops, calculator, get_time).\n"
+        "  - Synthesize: combine results, output the results, add [n] citations, and perform a quick self-check (units, edge cases).\n\n"
         "Tool contracts:\n"
         "  web_search(query) -> {answer?, results:[{id,title,snippet,url}], citations}\n"
         "  web_research(query,max_results?) -> {context, citations, results, answer?}\n"
