@@ -2,6 +2,40 @@
   <img src="assets/logo.svg" alt="Project Logo" height="144">
 </p>
 
+Everything is in the README below but optionally you can checkout the [slidedeck](https://docs.google.com/presentation/d/1dijpbFdx7RlDpcYknkmFT7DJVL6Ho91_6xVsMF-KUYs/edit?usp=sharing).
+
+# Google Cloud Platform (GCP) recources by GDG
+
+You’ll get free Google Cloud access during the event—no credit card needed.
+
+## How to redeem:
+
+- Make sure you’re signed into a Gmail/Google account.
+
+- Open our event’s unique link: https://trygcp.dev/claim/gdg-other-ai-accelerate-hack
+
+- Follow the prompts to activate your account and access the Google Cloud Console.
+
+## Generating Gemini API Keys
+
+After completing the steps to access the Google Cloud Console, you can generate your Gemini API Keys for free. You can find the keys be going to Google AI Studio (https://aistudio.google.com/api-keys) with the same google account used in the steps above.
+<img width="1905" height="493" alt="image" src="https://github.com/user-attachments/assets/4ec3a2d3-54cd-4858-979c-2b89fd2e0c17" />
+
+## What is GCP?
+Google Cloud Platform offers all the tools of the google cloud development environment to build your applications. It also offers free Gemini API Keys so you can leverage the full potential of generative AI during today's hacking!
+
+These are some of the services the GCP offers ranging from backend & storage to scheduling and ML workloads. Some of them might be interesting to leverage during this case, especially the services enablign AI services! 
+
+* **Vertex AI** : Train/host custom models, embeddings, batch prediction, Model Garden.
+* **Vision API** : Labels, OCR, object detection.
+* **Speech-to-Text / Text-to-Speech** : Voice features.
+* **Translation API** : Multilingual apps fast.
+* **Vertex AI Workbench** : Managed notebooks; GPUs/TPUs if available.
+
+GCP offers a broad range of other services to allow for cloud deployment of applications. Feel free to check out the possibilities of GCP for your hacking today or future projects!
+
+
+
 # GDG Hackathon - ML6 Agent Challenge
 
 Welcome! This repository contains everything you need to build and evaluate an AI agent using Google's Agent Development Kit (ADK).
@@ -96,9 +130,11 @@ The **weight** represents the total points available for that criterion. Points 
 
 **Code Submission:**
 
-- Push your code to this GitHub repository
+- Copy our repository and recreate it on your own repository by using a git fork (clone)
+- You can push your code to this newly created GitHub repository copy as desired (to your own repository). Pushing allows you to share your code with your teammates and allows us to see your progress to better help you along the way.
+- Give all of the ML6 evaluators access to this repository by (settings > collaborators): usernames are "clemvg", "MatthiasCami8", "TheoDepr", "cas-ML6".
 - Keep code readable and well-documented
-- **Deadline**: Last commit before the specified deadline will be evaluated
+- **Deadline**: Last commit before the specified deadline will be evaluated!
 
 **Presentation Submission:**
 
