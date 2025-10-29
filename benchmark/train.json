@@ -47,7 +47,7 @@
 
         },
         {
-            "question": "The book with the doi 10.1353/book.24372 concerns a certain neurologist. According to chapter 2 of the book, what author influenced this neurologist's belief in "endopsychic myths"? Give the last name only.",
+            "question": "The book with the doi 10.1353/book.24372 concerns a certain neurologist. According to chapter 2 of the book, what author influenced this neurologist's belief in \"endopsychic myths\"? Give the last name only.",
             "answer": "Kleinpaul"
         },
         {
@@ -59,7 +59,7 @@
             "answer": "CUB"
         },
         {
-            "question": "How many pages if the 2023 IPCC report (85 pages version) mentions nuclear energy?",
+            "question": "How many pages of the 2023 IPCC report (85 pages version) mention nuclear energy?",
             "answer": "0"
         },
         {
