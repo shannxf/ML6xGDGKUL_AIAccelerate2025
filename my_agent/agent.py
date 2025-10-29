@@ -4,7 +4,7 @@ The `root_agent` is used to evaluate your agent's performance.
 """
 
 from google.adk.agents import llm_agent
-from my_agent.tools import web_search, web_research, image_ops, calculator, get_time
+from my_agent.tools import web_search, web_research, image_ops, calculator, get_time, extract_text
 
 fast_agent = llm_agent.Agent(
     model='gemini-2.5-flash-lite',
@@ -41,15 +41,15 @@ root_agent = llm_agent.Agent(
         "You are a precise assistant. Keep answers short using proper citations and include a reference list.\n\n"
         "When needed, follow this loop:\n"
         "  - Plan: list 1-3 steps.\n"
-    "  - Act: call tools in sequence (web_search/web_research, image_ops, calculator, get_time).\n"
+    "  - Act: call tools in sequence (web_search/web_research, extract_text, image_ops, calculator, get_time).\n"
         "  - Synthesize: combine results, add [n] citations, and perform a quick self-check (units, edge cases).\n\n"
         "Tool contracts:\n"
         "  web_search(query) -> {answer?, results:[{id,title,snippet,url}], citations}\n"
         "  web_research(query,max_results?) -> {context, citations, results, answer?}\n"
-    "  image_ops(...), calculator(...), get_time(...)\n\n"
+    "  extract_text(...), image_ops(...), calculator(...), get_time(...)\n\n"
         "Routing: default to pro_agent for complex tasks; use fast_agent for simple factual questions.\n\n"
         "Output rule: Always end with a single line 'Final answer: <short answer>'."
     ),
-    tools=[web_search, web_research, image_ops, calculator, get_time],
+    tools=[web_search, web_research, extract_text, image_ops, calculator, get_time],
     sub_agents=[fast_agent, pro_agent],
 )
