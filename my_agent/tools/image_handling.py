@@ -5,6 +5,9 @@ import base64
 import hashlib
 from dataclasses import dataclass, asdict
 from typing import Any, Dict, Optional, Tuple, List, Union
+import urllib.request
+import urllib.error
+import http.client
 
 try:
     from PIL import Image, ImageOps, ImageFilter, ExifTags
@@ -94,6 +97,35 @@ def _placeholder_data_url(img: Image.Image, size: int = 16, blur_radius: int = 1
     tiny = tiny.filter(ImageFilter.GaussianBlur(blur_radius))
     b = _img_to_bytes(tiny, "PNG")
     return "data:image/png;base64," + base64.b64encode(b).decode("utf-8")
+
+
+def _fetch_image_from_url(url: str, max_bytes: int = 10_000_000, timeout: int = 10) -> bytes:
+    """Fetch an image from a URL with basic checks.
+
+    - Rejects non-image content-types when present.
+    - Enforces a maximum download size (max_bytes).
+    - Uses a simple User-Agent header.
+    """
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; image-fetch/1.0)"})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            # Check content-type if provided
+            ctype = resp.headers.get("Content-Type")
+            if ctype:
+                # Accept things like 'image/png' or 'image/jpeg; charset=binary'
+                if not ctype.split(";", 1)[0].strip().lower().startswith("image/"):
+                    raise ValueError(f"URL does not point to an image (Content-Type: {ctype})")
+            # Read up to max_bytes + 1 to detect overflow
+            data = resp.read(max_bytes + 1)
+            if len(data) > max_bytes:
+                raise ValueError(f"Image exceeds maximum allowed size of {max_bytes} bytes")
+            return data
+    except urllib.error.HTTPError as e:
+        raise ValueError(f"Failed to fetch image: HTTP {e.code}") from e
+    except urllib.error.URLError as e:
+        raise ValueError(f"Failed to fetch image: {e.reason}") from e
+    except http.client.InvalidURL as e:
+        raise ValueError(f"Invalid URL") from e
 
 # --- Public API ---
 
@@ -260,6 +292,7 @@ def ocr_text(
 def image_ops(
     operation: str,
     image_b64: Optional[str] = None,
+    image_url: Optional[str] = None,
     path: Optional[str] = None,
     # validate
     allowed_formats: Optional[List[str]] = None,
@@ -276,14 +309,20 @@ def image_ops(
     lang: str = "eng",
 ) -> Dict[str, Any]:
     """
-    Unified entry point for agent tooling. Provide either image_b64 (data URL or base64) or path.
+    Unified entry point for agent tooling. Provide one of:
+    - image_b64: Base64 data or data URL
+    - image_url: HTTP/HTTPS URL to fetch image from
+    - path: Local file path
     """
-    if not image_b64 and not path:
-        raise ValueError("Provide either image_b64 or path")
+    if not any([image_b64, image_url, path]):
+        raise ValueError("Provide one of: image_b64, image_url, or path")
+    
     if image_b64:
         if image_b64.startswith("data:"):
             image_b64 = image_b64.split(",", 1)[1]
         data = base64.b64decode(image_b64)
+    elif image_url:
+        data = _fetch_image_from_url(image_url)
     else:
         with open(path, "rb") as f:
             data = f.read()
@@ -321,6 +360,7 @@ tool = {
         "properties": {
             "operation": {"type": "string", "enum": ["inspect","validate","transform","thumbnails","ocr"]},
             "image_b64": {"type": "string", "description": "Base64 data (optionally a data URL)."},
+            "image_url": {"type": "string", "description": "HTTP/HTTPS URL to fetch image from."},
             "path": {"type": "string", "description": "Path to an image file."},
             "allowed_formats": {"type": "array", "items": {"type": "string"}},
             "max_megapixels": {"type": "number"},
